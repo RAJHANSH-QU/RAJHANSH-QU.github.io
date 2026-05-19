@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rajhansh — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
+  <!-- External stylesheet --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div id="loader">
+    <h1 id="introText"></h1>
+  </div>
+
+
+  <!-- =============================================
+       WAVE CURSOR CANVAS
+       Fixed canvas on top of page.
+       JS draws sea-ripple waves here on mouse move.
+       pointer-events:none so clicks pass through.
+  ============================================= -->
+  <canvas id="wave-canvas"></canvas>
+
+
+  <!-- =============================================
+       INTRO SPLASH SCREEN
+       Black screen. Words fall in 3D one by one.
+       CSS animation fades it out after 4.2s.
+  ============================================= -->
+  
+
+  <!-- =============================================
+       NAVBAR
+       Fixed top bar with logo and nav links.
+  ============================================= -->
+  <nav>
+    <div class="nav-logo">RAJ<span>HANSH</span><span class="nav-dot"></span></div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- =============================================
+       HERO SECTION
+       Full viewport height.
+       Star particle canvas behind content.
+       Typing text cycles through roles.
+  ============================================= -->
+  <section id="home">
+    <canvas id="particles-canvas"></canvas>
+    <div class="hero-content">
+      <p class="hero-greeting">Hey there </p>
+      <h1 class="hero-name">I'm <span class="accent">Rajhansh</span></h1>
+      <!-- JS types and deletes text here -->
+      <div class="hero-roles"><span id="typed-text"></span></div>
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="#contact"  class="btn-outline">Contact Me</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       ABOUT SECTION
+       Text only — no photo.
+       Stat cards show numbers below text.
+  ============================================= -->
+  <section id="about">
+    <div class="reveal">
+      <p class="section-label">Who I Am</p>
+      <h2 class="section-title">About Me</h2>
+    </div>
+    <div class="about-inner reveal">
+      <p>Final year BCA student from <strong>Roorkee, Uttarakhand</strong>, specialising in Mobile App & Web Development.</p>
+
+<p>I enjoy building things for the web — stuff that looks good and actually works. Still learning, still figuring things out, but that's the fun part.</p>
+
+<p>My goal is to become a <strong>Full Stack Developer</p>
+      <div class="about-stats">
+        <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Projects</div></div>
+        <div class="stat"><div class="stat-num">4+</div><div class="stat-label">Skills</div></div>
+        <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Curiosity</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SKILLS SECTION
+       Cards with progress bars.
+       data-percent is read by JS to animate the bar
+       width when the card scrolls into view.
+  ============================================= -->
+  <section id="skills">
+    <div class="reveal">
+      <p class="section-label">What I Know</p>
+      <h2 class="section-title">Skills</h2>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal" data-percent="90">
+        <div class="skill-icon"><i class="devicon-html5-plain colored"></i></div>
+        <div class="skill-name">HTML5</div>
+        <div class="skill-percent">90%</div>
+        <div class="progress-track"><div class="progress-fill"></div></div>
+      </div>
+
+      <div class="skill-card reveal" data-percent="80">
+        <div class="skill-icon"><i class="devicon-css3-plain colored"></i></div>
+        <div class="skill-name">CSS3</div>
+        <div class="skill-percent">80%</div>
+        <div class="progress-track"><div class="progress-fill"></div></div>
+      </div>
+
+      <div class="skill-card reveal" data-percent="70">
+        <div class="skill-icon"><i class="devicon-javascript-plain colored"></i></div>
+          <div class="skill-name">JavaScript</div>
+        <div class="skill-percent">70%</div>
+        <div class="progress-track"><div class="progress-fill"></div></div>
+      </div>
+
+      <div class="skill-card reveal" data-percent="85">
+        <div class="skill-icon"><i class="devicon-chrome-plain colored"></i></div>
+        <div class="skill-name">Responsive Design</div>
+        <div class="skill-percent">85%</div>
+        <div class="progress-track"><div class="progress-fill"></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================
+       PROJECTS — LEVITATING 3D CUBE
+       - cube-scene   → perspective wrapper
+       - cube         → the actual rotating element
+       - face-*       → 6 project faces
+       - backface-visibility:hidden on .face
+         prevents text bleeding through opposite face
+       - GitHub buttons link to your real repos
+       - Shadow pulses below the cube
+  ============================================= -->
+  <section id="projects">
+    <div class="reveal">
+      <p class="section-label">What I've Built</p>
+      <h2 class="section-title">Projects</h2>
+      <p class="projects-intro">Drag or swipe the cube — explore all 6 faces including top &amp; bottom</p>
+    </div>
+
+    <!-- Perspective wrapper — gives 3D depth -->
+    <div class="cube-scene" id="cubeScene">
+      <!-- The cube — JS sets transform here on drag -->
+      <div class="cube" id="cube">
+
+        <!-- FACE 1: FRONT -->
+        <div class="face face-front">
+          <div class="face-emoji">🌐</div>
+          <div class="face-title">Portfolio Site</div>
+          <div class="face-desc">3D animated portfolio with wave cursor and levitating cube.</div>
+          <div class="face-tag">HTML · CSS · JS</div>
+          <!-- Replace href with your real GitHub repo URL -->
+          <a class="face-github" href="https://github.com/rajhansh" target="_blank">
+            <svg class="gh-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <!-- FACE 2: BACK -->
+        <div class="face face-back">
+          <div class="face-emoji">🛒</div>
+          <div class="face-title">E-Commerce UI</div>
+          <div class="face-desc">Responsive online store with cart and smooth UX flow.</div>
+          <div class="face-tag">HTML · CSS · JS</div>
+          <a class="face-github" href="https://github.com/rajhansh" target="_blank">
+            <svg class="gh-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <!-- FACE 3: RIGHT -->
+        <div class="face face-right">
+          <div class="face-emoji">🎵</div>
+          <div class="face-title">Music Player</div>
+          <div class="face-desc">Sleek player with playlist, progress bar and animations.</div>
+          <div class="face-tag">JavaScript · CSS</div>
+          <a class="face-github" href="https://github.com/rajhansh" target="_blank">
+            <svg class="gh-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <!-- FACE 4: LEFT -->
+        <div class="face face-left">
+          <div class="face-emoji">📝</div>
+          <div class="face-title">Todo App</div>
+          <div class="face-desc">Minimal task manager with local storage and drag-to-reorder.</div>
+          <div class="face-tag">JavaScript</div>
+          <a class="face-github" href="https://github.com/rajhansh" target="_blank">
+            <svg class="gh-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <!-- FACE 5: TOP -->
+        <div class="face face-top">
+          <div class="face-emoji">🌤️</div>
+          <div class="face-title">Weather App</div>
+          <div class="face-desc">Live weather with animated icons and location search.</div>
+          <div class="face-tag">API · JavaScript</div>
+          <a class="face-github" href="https://github.com/rajhansh" target="_blank">
+            <svg class="gh-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <!-- FACE 6: BOTTOM -->
+        <div class="face face-bottom">
+          <div class="face-emoji">💬</div>
+          <div class="face-title">Chat UI</div>
+          <div class="face-desc">Real-time chat interface design with modern dark UI.</div>
+          <div class="face-tag">HTML · CSS</div>
+          <a class="face-github" href="https://github.com/rajhansh" target="_blank">
+            <svg class="gh-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+
+      </div><!-- end .cube -->
+    </div><!-- end .cube-scene -->
+
+    <!-- Shadow below cube — pulses opposite to the float -->
+    <div class="cube-shadow-wrap">
+      <div class="cube-shadow"></div>
+    </div>
+    <p class="cube-hint">← drag to rotate &nbsp;|&nbsp; drag up/down for top &amp; bottom faces &nbsp;|&nbsp; swipe on mobile →</p>
+  </section>
+
+  <!-- =============================================
+       CONTACT SECTION
+       Left: intro text + social cards
+       Right: contact form with purple send button
+  ============================================= -->
+  <section id="contact">
+    <div class="reveal">
+      <p class="section-label"> </p>
+      <h2 class="section-title">Contact</h2>
+    </div>
+    <div class="contact-grid">
+
+      <!-- Social cards -->
+      <div class="reveal">
+        <p class="contact-intro">My inbox is always open. Drop me a message and I'll get back to you as soon as possible.</p>
+        <a href="mailto:rajsemwal007@gmail.com" class="social-card">
+          <div class="social-icon"><i class="fa-solid fa-envelope"></i></div>
+          <div class="social-info"><label>Email</label><span>rajsemwal007@gmail.com</span></div>
+        </a>
+        <a href="https://linkedin.com/in/rajhansh" class="social-card" target="_blank">
+          <div class="social-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+          <div class="social-info"><label>LinkedIn</label><span>linkedin.com/in/rajhansh</span></div>
+        </a>
+        <a href="https://github.com/RAJHANSH-QU" class="social-card" target="_blank">
+          <div class="social-icon"><i class="fa-brands fa-github"></i></div>
+          <div class="social-info"><label>GitHub</label><span>github.com/RAJHANSH-QU</span></div>
+        </a>
+      </div>
+
+      <!-- Contact form -->
+      <!-- Contact form -->
+<form class="contact-form reveal" action="https://formspree.io/f/mgodoroz" method="POST">
+
+  <div class="form-group">
+    <label>Name</label>
+    <input type="text" name="name" placeholder="Your name" required/>
+  </div>
+
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" name="email" placeholder="your@email.com" required/>
+  </div>
+
+  <div class="form-group">
+    <label>Message</label>
+    <textarea name="message" placeholder="Tell me about your project..." required></textarea>
+  </div>
+
+  <button type="submit" class="btn-send">Send Message </button>
+
+</form>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer>
+    <p>Built with ❤️ by <strong>Rajhansh</strong> &nbsp;·&nbsp; 2026</p>
+  </footer>
+
+  <!-- External JavaScript — loaded last so DOM is ready -->
+  <script src="script.js"></script>
+
+</body>
+</html>

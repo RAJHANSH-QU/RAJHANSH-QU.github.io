@@ -1,0 +1,678 @@
+/* =============================================
+   style.css — Rajhansh Portfolio
+   All visual styles live here.
+   Edit CSS variables at the top to retheme.
+============================================= */
+
+/* =============================================
+   1. CSS VARIABLES — GLOBAL THEME
+   Change these to restyle the whole portfolio
+============================================= */
+:root {
+  --bg:        #05070f;
+  --bg2:       #090c18;
+  --surface:   #0d1022;
+  --border:    #171d33;
+  --accent:    #7c5cfc;
+  --accent2:   #a78bfa;
+  --accent3:   #38bdf8;
+  --glow:      rgba(124,92,252,0.5);
+  --text:      #e8eaf6;
+  --muted:     #525a78;
+  --white:     #ffffff;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+/* =============================================
+   2. GLOBAL RESET & BASE
+============================================= */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none; /* default cursor hidden — wave cursor replaces it */
+}
+
+/* =============================================
+   3. WAVE CURSOR CANVAS
+   Fixed full-screen overlay for ripple effect.
+   pointer-events:none so page clicks work normally.
+============================================= */
+#wave-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* =============================================
+   4. INTRO SPLASH SCREEN
+   Black full-screen overlay with falling 3D words.
+   Fades out automatically after the words land.
+============================================= */
+/* =============================================
+   LOADER — full screen intro
+============================================= */
+/* =============================================
+   LOADER
+============================================= */
+#loader {
+  transition: opacity 1s ease, visibility 1s ease;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(130,90,255,0.3) 0%, transparent 28%),
+    linear-gradient(180deg, #1a1c22 0%, #101114 45%, #000000 100%);
+  z-index: 9999;
+  overflow: hidden;
+}
+
+#loader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* =============================================
+   INTRO TEXT WRAPPER
+============================================= */
+#introText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Each line wrapper */
+.intro-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0px;
+  white-space: nowrap; /* NEVER splits */
+}
+
+.skill-icon i {
+  font-size: 2.5rem;
+}
+/* =============================================
+   EACH LETTER
+   font-size uses vw so it auto-fits any screen
+============================================= */
+#introText span {
+  display: inline-block;
+  font-family: 'Syne', sans-serif;
+  font-weight: 900;
+  font-size: 5.5vw; /* scales with screen width */
+  letter-spacing: 0.3vw;
+  color: #ecebeb;
+
+  /* Clean simple 3D depth — no glow, just layered shadows */
+  text-shadow:
+    0px 1px 0px #d8d6e2,
+    0px 2px 0px #000000,
+    0px 3px 0px #000000,
+    0px 4px 0px #f4ecec,
+    0px 5px 0px #000000,
+    0px 6px 10px rgba(0,0,0,0.6) !important;
+
+
+  opacity: 0;
+  transform: translateY(-500px) rotateX(90deg) rotateY(20deg) translateZ(150px);
+  animation: fall 0.7s cubic-bezier(0.17, 0.89, 0.32, 1.28) forwards;
+  animation-delay: calc(var(--i) * 0.06s);
+}
+
+/* Space between words */
+#introText .space {
+  display: inline-block;
+  width: 2vw;
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+/* =============================================
+   PORTFOLIO LETTERS — bigger + purple 3D
+============================================= */
+#introText .big-letter {
+  font-size: 6vw !important; /* twice the size of top line */
+  letter-spacing: 0.5vw !important;
+  color: #fbfbfb !important;
+
+  /* Purple 3D depth — clean, no heavy glow */
+  text-shadow:
+    0px 1px 0px #f5f3ff,
+    0px 2px 0px #000000,
+    0px 3px 0px #000000,
+    0px 4px 0px #f4ecec,
+    0px 5px 0px #000000,
+    0px 6px 10px rgba(0,0,0,0.6) !important;
+}
+
+/* =============================================
+   FALL ANIMATION
+============================================= */
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-500px) rotateX(90deg) rotateY(20deg) translateZ(150px);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(15px) rotateX(-3deg) rotateY(0deg) translateZ(0);
+  }
+  82% {
+    transform: translateY(-5px) rotateX(1deg) rotateY(0deg) translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) rotateY(0deg) translateZ(0);
+  }
+}
+/* =============================================
+   5. PARTICLE CANVAS — star background in hero
+============================================= */
+#particles-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* =============================================
+   6. NAVBAR
+============================================= */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 6%;
+  background: rgba(5,7,15,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(124,92,252,0.1);
+}
+.nav-logo {
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--white);
+}
+.nav-logo span { color: var(--accent); }
+
+/* Pulsing glow dot beside logo */
+.nav-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-left: 5px;
+  vertical-align: middle;
+  box-shadow: 0 0 8px var(--accent);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 8px var(--accent); }
+  50%       { box-shadow: 0 0 22px var(--accent2); transform: scale(1.3); }
+}
+
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+/* Underline slides in on hover */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1.5px;
+  background: var(--accent2);
+  transition: width 0.3s;
+}
+.nav-links a:hover { color: var(--accent2); }
+.nav-links a:hover::after { width: 100%; }
+
+/* =============================================
+   7. HERO SECTION
+============================================= */
+#home {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 6rem 2rem 2rem;
+}
+.hero-content { position: relative; z-index: 1; }
+
+.hero-greeting {
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  color: var(--accent2);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0;
+  /* Fade in after intro screen disappears */
+  animation: fadeUp 0.8s ease forwards 4.8s;
+}
+
+.hero-name {
+  font-family: var(--font-head);
+  font-size: clamp(3.5rem, 9vw, 8.5rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 0.92;
+  margin-bottom: 1.4rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 5.0s;
+  /* Layered text-shadow creates 3D depth illusion */
+  text-shadow:
+    1px 1px 0 rgba(124,92,252,0.45),
+    3px 3px 0 rgba(124,92,252,0.28),
+    6px 6px 0 rgba(124,92,252,0.14),
+    0 0 80px rgba(124,92,252,0.2);
+}
+/* Gradient color clip for the name */
+.hero-name .accent {
+  color: transparent;
+  background: linear-gradient(130deg, var(--accent), var(--accent3) 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-roles {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--muted);
+  height: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 5.2s;
+}
+/* Blinking | after typed text */
+#typed-text::after {
+  content: '|';
+  color: var(--accent);
+  animation: blink 0.7s infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero-cta {
+  margin-top: 2.8rem;
+  display: flex; gap: 1rem;
+  justify-content: center; flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 5.5s;
+}
+.btn-primary {
+  padding: 0.85rem 2.2rem;
+  background: linear-gradient(135deg, var(--accent), #4e2fc9);
+  color: #fff; border: none; border-radius: 50px;
+  font-family: var(--font-body); font-size: 0.95rem; cursor: none;
+  transition: transform 0.2s, box-shadow 0.3s; text-decoration: none;
+  box-shadow: 0 4px 24px rgba(124,92,252,0.4);
+}
+.btn-primary:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(124,92,252,0.65); }
+.btn-outline {
+  padding: 0.85rem 2.2rem; background: transparent;
+  color: var(--accent2); border: 1.5px solid rgba(124,92,252,0.45);
+  border-radius: 50px; font-family: var(--font-body); font-size: 0.95rem; cursor: none;
+  transition: background 0.2s, transform 0.2s; text-decoration: none;
+}
+.btn-outline:hover { background: rgba(124,92,252,0.1); transform: translateY(-4px); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================
+   8. SCROLL REVEAL
+   Elements start invisible + shifted down.
+   JS adds .visible when element enters viewport.
+============================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(45px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* =============================================
+   9. SHARED SECTION STYLES
+============================================= */
+section { padding: 6rem 6%; }
+.section-label {
+  font-size: 0.7rem; letter-spacing: 5px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+}
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 800;
+  color: var(--white); margin-bottom: 3rem; line-height: 1.05;
+}
+
+/* =============================================
+   10. ABOUT SECTION — text + stat cards
+============================================= */
+#about { background: var(--bg2); }
+.about-inner { max-width: 760px; }
+.about-inner p {
+  color: var(--muted); line-height: 1.9;
+  font-size: 1.08rem; margin-bottom: 1.2rem;
+}
+.about-inner p strong { color: var(--accent2); font-weight: 600; }
+
+/* Stat cards */
+.about-stats { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; }
+.stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1rem 1.5rem; text-align: center;
+}
+.stat-num {
+  font-family: var(--font-head); font-size: 2rem;
+  font-weight: 800; color: var(--accent); line-height: 1;
+}
+.stat-label {
+  font-size: 0.75rem; color: var(--muted);
+  letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px;
+}
+
+/* =============================================
+   11. SKILLS SECTION — cards with progress bars
+============================================= */
+#skills { background: var(--bg); }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.4rem;
+}
+.skill-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 1.6rem;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  position: relative; overflow: hidden;
+}
+/* Corner radial glow on each card */
+.skill-card::before {
+  content: ''; position: absolute;
+  top: -40px; right: -40px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(124,92,252,0.15), transparent 70%);
+  border-radius: 50%;
+}
+.skill-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 40px rgba(124,92,252,0.2);
+}
+.skill-icon   { font-size: 1.6rem; margin-bottom: 0.8rem; }
+.skill-name   { font-family: var(--font-head); font-weight: 700; color: var(--white); font-size: 1.05rem; margin-bottom: 0.3rem; }
+.skill-percent{ font-size: 0.78rem; color: var(--accent2); margin-bottom: 0.8rem; letter-spacing: 1px; }
+
+/* Progress bar */
+.progress-track {
+  width: 100%; height: 5px;
+  background: var(--border); border-radius: 99px; overflow: hidden;
+}
+/* Width starts at 0 — JS animates it to data-percent on scroll */
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  border-radius: 99px; width: 0%;
+  transition: width 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 8px var(--glow);
+}
+
+/* =============================================
+   12. PROJECTS — 3D LEVITATING CUBE
+============================================= */
+#projects { background: var(--bg2); text-align: center; }
+.projects-intro { color: var(--muted); margin-bottom: 3rem; font-size: 1rem; }
+
+/* Outer wrapper — sets the 3D perspective depth */
+.cube-scene {
+  width: 300px; height: 300px;
+  margin: 0 auto;
+  perspective: 1000px;
+  cursor: grab;
+  user-select: none; /* prevent text selection while dragging */
+}
+.cube-scene:active { cursor: grabbing; }
+
+/* The cube container — JS applies rotateX/Y here */
+.cube {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d; /* children live in real 3D space */
+  /* Default view angle so 3 faces are visible on load */
+  transform: rotateX(-18deg) rotateY(28deg);
+  /* Smooth inertia after drag ends */
+  transition: transform 0.05s linear;
+}
+
+/* Levitation float — JS toggles this class on/off */
+.cube.floating {
+  animation: levitate 3.5s ease-in-out infinite;
+}
+@keyframes levitate {
+  0%, 100% { transform: rotateX(var(--rx, -18deg)) rotateY(var(--ry, 28deg)) translateY(0); }
+  50%       { transform: rotateX(var(--rx, -18deg)) rotateY(var(--ry, 28deg)) translateY(-22px); }
+}
+
+/* ---- CUBE FACES ----
+   KEY FIX for text bleed-through:
+   backface-visibility:hidden hides a face when
+   it is rotated away from the viewer, so you never
+   see text from the back face showing through the front.
+*/
+.face {
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 16px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 1.8rem;
+  /* THE backface fix */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Glassmorphism dark panel */
+  background: rgba(8,10,24,0.96);
+  border: 1px solid rgba(124,92,252,0.3);
+  box-shadow:
+    inset 0 0 50px rgba(124,92,252,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 0 30px rgba(124,92,252,0.1);
+}
+/* Gradient shimmer overlay */
+.face::before {
+  content: ''; position: absolute; inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(124,92,252,0.07) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* Position each face in 3D space.
+   translateZ(150) = half the cube width (300/2) */
+.face-front  { transform: translateZ(150px); }
+.face-back   { transform: rotateY(180deg)  translateZ(150px); }
+.face-right  { transform: rotateY(90deg)   translateZ(150px); }
+.face-left   { transform: rotateY(-90deg)  translateZ(150px); }
+.face-top    { transform: rotateX(90deg)   translateZ(150px); }
+.face-bottom { transform: rotateX(-90deg)  translateZ(150px); }
+
+.face-emoji { font-size: 2rem; margin-bottom: 0.6rem; }
+.face-title {
+  font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+  color: var(--white); margin-bottom: 0.5rem; text-align: center;
+}
+.face-desc {
+  font-size: 0.8rem; color: var(--muted);
+  text-align: center; line-height: 1.6; margin-bottom: 0.8rem;
+}
+.face-tag {
+  font-size: 0.68rem; background: rgba(124,92,252,0.18);
+  color: var(--accent2); padding: 3px 10px; border-radius: 99px;
+  border: 1px solid rgba(124,92,252,0.25); margin-bottom: 0.9rem;
+}
+
+/* GitHub button on each face */
+.face-github {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50px;
+  color: var(--text); font-size: 0.75rem;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.face-github:hover {
+  background: rgba(124,92,252,0.2);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+.gh-icon { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+/* =============================================
+   13. CUBE SHADOW
+   Pulsing ellipse below the cube.
+   Shrinks when cube floats up, grows when it lands.
+============================================= */
+.cube-shadow-wrap {
+  width: 300px; margin: 0 auto;
+  display: flex; justify-content: center;
+  margin-top: 8px;
+}
+.cube-shadow {
+  width: 180px; height: 28px;
+  background: radial-gradient(ellipse, rgba(124,92,252,0.45) 0%, transparent 70%);
+  border-radius: 50%; filter: blur(8px);
+  animation: shadowPulse 3.5s ease-in-out infinite;
+}
+@keyframes shadowPulse {
+  0%, 100% { transform: scaleX(1);    opacity: 0.65; }
+  50%       { transform: scaleX(0.45); opacity: 0.18; }
+}
+.cube-hint {
+  margin-top: 1.8rem;
+  color: var(--muted); font-size: 0.78rem; letter-spacing: 1px;
+}
+
+/* =============================================
+   14. CONTACT SECTION
+============================================= */
+#contact { background: var(--bg); }
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start;
+}
+.contact-intro { color: var(--muted); line-height: 1.85; margin-bottom: 2rem; font-size: 1rem; }
+
+.social-card {
+  display: flex; align-items: center; gap: 1.1rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1rem 1.3rem; margin-bottom: 1rem;
+  text-decoration: none; color: var(--text);
+  transition: border-color 0.3s, transform 0.25s, box-shadow 0.3s;
+}
+.social-card:hover {
+  border-color: var(--accent);
+  transform: translateX(8px);
+  box-shadow: 0 4px 20px rgba(124,92,252,0.15);
+}
+.social-icon {
+  width: 46px; height: 46px;
+  background: rgba(124,92,252,0.12);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+}
+.social-info label {
+  display: block; font-size: 0.68rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 2px; cursor: inherit;
+}
+.social-info span { font-size: 0.88rem; color: var(--text); }
+
+.contact-form { display: flex; flex-direction: column; gap: 1.1rem; }
+.form-group   { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group label { font-size: 0.7rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); }
+.form-group input,
+.form-group textarea {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 0.85rem 1rem;
+  color: var(--text); font-family: var(--font-body);
+  font-size: 0.95rem; outline: none; resize: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,92,252,0.12);
+}
+.form-group textarea { min-height: 130px; }
+
+/* Purple send button */
+.btn-send {
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--accent), #4e2fc9);
+  color: #fff; border: none; border-radius: 50px;
+  font-family: var(--font-body); font-size: 1rem; cursor: none;
+  transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 1px;
+  box-shadow: 0 4px 20px rgba(124,92,252,0.35);
+}
+.btn-send:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(124,92,252,0.6); }
+
+/* =============================================
+   15. FOOTER
+============================================= */
+footer {
+  text-align: center; padding: 2.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted); font-size: 0.85rem;
+}
+footer strong { color: var(--accent2); }
+
+/* =============================================
+   16. RESPONSIVE — mobile adjustments
+============================================= */
+@media (max-width: 768px) {
+  .contact-grid       { grid-template-columns: 1fr; }
+  .nav-links          { gap: 1.4rem; }
+  /* Smaller cube on mobile */
+  .cube-scene,
+  .cube-shadow-wrap   { width: 240px; }
+  .face               { width: 240px; height: 240px; }
+  .face-front         { transform: translateZ(120px); }
+  .face-back          { transform: rotateY(180deg)  translateZ(120px); }
+  .face-right         { transform: rotateY(90deg)   translateZ(120px); }
+  .face-left          { transform: rotateY(-90deg)  translateZ(120px); }
+  .face-top           { transform: rotateX(90deg)   translateZ(120px); }
+  .face-bottom        { transform: rotateX(-90deg)  translateZ(120px); }
+}
