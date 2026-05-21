@@ -15,43 +15,34 @@
     <h1 id="introText"></h1>
   </div>
 
-
-  <!-- =============================================
-       WAVE CURSOR CANVAS
-       Fixed canvas on top of page.
-       JS draws sea-ripple waves here on mouse move.
-       pointer-events:none so clicks pass through.
   ============================================= -->
   <canvas id="wave-canvas"></canvas>
 
 
   <!-- =============================================
        INTRO SPLASH SCREEN
-       Black screen. Words fall in 3D one by one.
-       CSS animation fades it out after 4.2s.
   ============================================= -->
   
 
   <!-- =============================================
        NAVBAR
-       Fixed top bar with logo and nav links.
   ============================================= -->
   <nav>
     <div class="nav-logo">RAJ<span>HANSH</span><span class="nav-dot"></span></div>
-    <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home"     class="nav-link-item">Home</a></li>
+      <li><a href="#about"    class="nav-link-item">About</a></li>
+      <li><a href="#skills"   class="nav-link-item">Skills</a></li>
+      <li><a href="#projects" class="nav-link-item">Projects</a></li>
+      <li><a href="#contact"  class="nav-link-item">Contact</a></li>
     </ul>
   </nav>
 
   <!-- =============================================
        HERO SECTION
-       Full viewport height.
-       Star particle canvas behind content.
-       Typing text cycles through roles.
   ============================================= -->
   <section id="home">
     <canvas id="particles-canvas"></canvas>
@@ -69,8 +60,6 @@
 
   <!-- =============================================
        ABOUT SECTION
-       Text only — no photo.
-       Stat cards show numbers below text.
   ============================================= -->
   <section id="about">
     <div class="reveal">
@@ -137,13 +126,6 @@
 
   <!-- =============================================
        PROJECTS — LEVITATING 3D CUBE
-       - cube-scene   → perspective wrapper
-       - cube         → the actual rotating element
-       - face-*       → 6 project faces
-       - backface-visibility:hidden on .face
-         prevents text bleeding through opposite face
-       - GitHub buttons link to your real repos
-       - Shadow pulses below the cube
   ============================================= -->
   <section id="projects">
     <div class="reveal">
@@ -208,7 +190,7 @@
         <!-- FACE 5: TOP -->
         <div class="face face-top">
           <div class="face-emoji">soooon</div>
-          <div class="face-title">sooooooon</div>
+          <div class="face-title">sooooooooooooon</div>
           <div class="face-desc">sooooooooon</div>
           <div class="face-tag">soooooooooooon</div>
           <a class="face-github" href="https://github.com/rajhansh" target="_blank">
@@ -219,7 +201,7 @@
 
         <!-- FACE 6: BOTTOM -->
         <div class="face face-bottom">
-          <div class="face-emoji">sooooon</div>
+          <div class="face-emoji">sooooooooooon</div>
           <div class="face-title">soooooooooon</div>
           <div class="face-desc">soooooooooon</div>
           <div class="face-tag">soooooooooon</div>
@@ -236,13 +218,10 @@
     <div class="cube-shadow-wrap">
       <div class="cube-shadow"></div>
     </div>
-    <p class="cube-hint">← drag to rotate &nbsp;|&nbsp; drag up/down for top &amp; bottom faces &nbsp;|&nbsp; swipe on mobile →</p>
   </section>
 
   <!-- =============================================
        CONTACT SECTION
-       Left: intro text + social cards
-       Right: contact form with purple send button
   ============================================= -->
   <section id="contact">
     <div class="reveal">
@@ -283,7 +262,7 @@
 
   <div class="form-group">
     <label>Message</label>
-    <textarea name="message" placeholder="drop message" required></textarea>
+    <textarea name="message" placeholder="Tell me about your project..." required></textarea>
   </div>
 
   <button type="submit" class="btn-send">Send Message </button>
