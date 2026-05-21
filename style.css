@@ -79,7 +79,7 @@ body {
   background:
     radial-gradient(circle at 50% 10%, rgba(130,90,255,0.3) 0%, transparent 28%),
     linear-gradient(180deg, #1a1c22 0%, #101114 45%, #000000 100%);
-  z-index: 9999;
+  z-index: 99999;
   overflow: hidden;
 }
 
@@ -107,8 +107,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 0px;
-  white-space: nowrap; /* NEVER splits */
+  white-space: nowrap;
+  max-width: 95vw;
 }
 
 .skill-icon i {
@@ -122,7 +124,7 @@ body {
   display: inline-block;
   font-family: 'Syne', sans-serif;
   font-weight: 900;
-  font-size: 5.5vw; /* scales with screen width */
+  font-size: clamp(1.2rem, 5.5vw, 4rem); /* scales with screen width */
   letter-spacing: 0.3vw;
   color: #ecebeb;
 
@@ -155,7 +157,7 @@ body {
    PORTFOLIO LETTERS — bigger + purple 3D
 ============================================= */
 #introText .big-letter {
-  font-size: 6vw !important; /* twice the size of top line */
+  font-size: clamp(1.6rem, 6vw, 5rem) !important;
   letter-spacing: 0.5vw !important;
   color: #fbfbfb !important;
 
@@ -712,7 +714,7 @@ footer strong { color: var(--accent2); }
   .nav-hamburger { display: flex; }
 
   .nav-links {
-    display: none;
+    display: none !important;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(5,7,15,0.99);
@@ -722,7 +724,9 @@ footer strong { color: var(--accent2); }
     gap: 2.5rem;
     z-index: 9999;
   }
-  .nav-links.open { display: flex; }
+  .nav-links.open {
+    display: flex !important;
+  }
   .nav-links a {
     font-size: 1.2rem;
     letter-spacing: 4px;
