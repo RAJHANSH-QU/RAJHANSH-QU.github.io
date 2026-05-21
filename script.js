@@ -1,19 +1,4 @@
-/* =============================================
-   script.js — Rajhansh Portfolio
-   All interactive logic lives here.
-   Sections:
-     1. Wave Cursor
-     2. Particle Stars
-     3. Typing Effect
-     4. Scroll Reveal
-     5. 3D Cube — Drag to Rotate (FIXED)
-============================================= */
-// =============================================
-// LOADER — write letters then hide
-// =============================================
-// =============================================
-// LOADER — write letters then hide
-// =============================================
+
 /* =============================================
    LOADER — builds letters then hides
 ============================================= */
