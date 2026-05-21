@@ -98,8 +98,11 @@ body {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  width: 100%;
-  padding: 20px;
+  width: max-content;      /* natural width — don't stretch */
+  padding: 0 10px;
+  /* Scale DOWN to fit the viewport width automatically */
+  max-width: 90vw;
+  transform-origin: center center;
 }
 
 /* Each line wrapper */
