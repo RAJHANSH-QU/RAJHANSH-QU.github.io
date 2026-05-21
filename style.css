@@ -38,7 +38,12 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   overflow-x: hidden;
-  cursor: none; /* default cursor hidden — wave cursor replaces it */
+  cursor: none; /* hidden on desktop — wave ripple replaces it */
+}
+/* Restore cursor on touch/mobile devices */
+@media (hover: none) and (pointer: coarse) {
+  body { cursor: auto; }
+  .btn-primary, .btn-outline, .btn-send { cursor: pointer; }
 }
 
 /* =============================================
@@ -468,11 +473,12 @@ section { padding: 6rem 6%; }
 .cube {
   width: 100%; height: 100%;
   position: relative;
-  transform-style: preserve-3d; /* children live in real 3D space */
-  /* Default view angle so 3 faces are visible on load */
+  transform-style: preserve-3d;
   transform: rotateX(-18deg) rotateY(28deg);
-  /* Smooth inertia after drag ends */
   transition: transform 0.05s linear;
+  /* Force GPU compositing — prevents face z-fighting */
+  will-change: transform;
+  -webkit-transform-style: preserve-3d;
 }
 
 /* Levitation float — JS toggles this class on/off */
@@ -497,11 +503,11 @@ section { padding: 6rem 6%; }
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 1.8rem;
-  /* THE backface fix */
+  /* Fully opaque — no face bleed-through */
+  background: #080a18;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  /* Glassmorphism dark panel */
-  background: rgba(8,10,24,0.96);
+  isolation: isolate;
   border: 1px solid rgba(124,92,252,0.3);
   box-shadow:
     inset 0 0 50px rgba(124,92,252,0.05),
@@ -514,6 +520,8 @@ section { padding: 6rem 6%; }
   border-radius: 16px;
   background: linear-gradient(135deg, rgba(124,92,252,0.07) 0%, transparent 55%);
   pointer-events: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Position each face in 3D space.
@@ -660,19 +668,142 @@ footer {
 footer strong { color: var(--accent2); }
 
 /* =============================================
-   16. RESPONSIVE — mobile adjustments
+   16. RESPONSIVE — full mobile/tablet support
 ============================================= */
+
+/* ── Hamburger button (hidden on desktop) ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 600;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+/* Animate to X when open */
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Tablet (≤ 900px) ── */
+@media (max-width: 900px) {
+  section { padding: 5rem 5%; }
+  .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
+/* ── Mobile (≤ 768px) ── */
 @media (max-width: 768px) {
-  .contact-grid       { grid-template-columns: 1fr; }
-  .nav-links          { gap: 1.4rem; }
-  /* Smaller cube on mobile */
+
+  /* NAVBAR — hamburger menu */
+  nav { padding: 1rem 5%; }
+
+  .nav-hamburger { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(5,7,15,0.98);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    z-index: 550;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a {
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+  }
+
+  /* HERO */
+  #home { padding: 7rem 5% 3rem; }
+  .hero-name {
+    font-size: clamp(2.2rem, 11vw, 4rem);
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    word-break: break-word;
+  }
+  .hero-cta { margin-top: 2rem; gap: 0.8rem; }
+  .btn-primary, .btn-outline { padding: 0.75rem 1.6rem; font-size: 0.88rem; }
+
+  /* ABOUT */
+  #about { padding: 4rem 5%; }
+  .about-inner p { font-size: 0.97rem; }
+  .about-stats { gap: 1rem; }
+  .stat { padding: 0.8rem 1.2rem; }
+  .stat-num { font-size: 1.6rem; }
+
+  /* SKILLS */
+  #skills { padding: 4rem 5%; }
+  .skills-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; }
+  .skill-card { padding: 1.2rem; }
+
+  /* PROJECTS — cube */
+  #projects { padding: 4rem 5%; }
+  .projects-intro { font-size: 0.88rem; margin-bottom: 2rem; }
   .cube-scene,
-  .cube-shadow-wrap   { width: 240px; }
-  .face               { width: 240px; height: 240px; }
-  .face-front         { transform: translateZ(120px); }
-  .face-back          { transform: rotateY(180deg)  translateZ(120px); }
-  .face-right         { transform: rotateY(90deg)   translateZ(120px); }
-  .face-left          { transform: rotateY(-90deg)  translateZ(120px); }
-  .face-top           { transform: rotateX(90deg)   translateZ(120px); }
-  .face-bottom        { transform: rotateX(-90deg)  translateZ(120px); }
+  .cube-shadow-wrap { width: 240px; }
+  .face             { width: 240px; height: 240px; padding: 1.2rem; }
+  .face-front       { transform: translateZ(120px); }
+  .face-back        { transform: rotateY(180deg)  translateZ(120px); }
+  .face-right       { transform: rotateY(90deg)   translateZ(120px); }
+  .face-left        { transform: rotateY(-90deg)  translateZ(120px); }
+  .face-top         { transform: rotateX(90deg)   translateZ(120px); }
+  .face-bottom      { transform: rotateX(-90deg)  translateZ(120px); }
+  .face-emoji { font-size: 1.6rem; }
+  .face-title { font-size: 0.95rem; }
+  .face-desc  { font-size: 0.72rem; }
+  .cube-hint  { font-size: 0.7rem; padding: 0 1rem; text-align: center; }
+
+  /* CONTACT */
+  #contact { padding: 4rem 5%; }
+  .contact-grid { gap: 2rem; }
+  .social-info span { font-size: 0.78rem; word-break: break-all; }
+
+  /* SECTION LABELS */
+  section { padding: 4rem 5%; }
+  .section-title { margin-bottom: 2rem; }
+}
+
+/* ── Small phones (≤ 480px) ── */
+@media (max-width: 480px) {
+  .nav-logo { font-size: 1.1rem; letter-spacing: 2px; }
+
+  /* Loader text fits small screens */
+  #introText span    { font-size: 8vw; }
+  #introText .big-letter { font-size: 9.5vw !important; }
+  #introText .space  { width: 3vw; }
+
+  .hero-greeting { letter-spacing: 3px; }
+  .hero-roles    { font-size: 0.95rem; }
+  .hero-cta      { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-outline { width: 80%; text-align: center; }
+
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Even smaller cube on tiny phones */
+  .cube-scene,
+  .cube-shadow-wrap { width: 200px; }
+  .face             { width: 200px; height: 200px; padding: 1rem; }
+  .face-front       { transform: translateZ(100px); }
+  .face-back        { transform: rotateY(180deg)  translateZ(100px); }
+  .face-right       { transform: rotateY(90deg)   translateZ(100px); }
+  .face-left        { transform: rotateY(-90deg)  translateZ(100px); }
+  .face-top         { transform: rotateX(90deg)   translateZ(100px); }
+  .face-bottom      { transform: rotateX(-90deg)  translateZ(100px); }
+
+  .about-stats { flex-direction: column; gap: 0.8rem; }
+  .stat { width: 100%; }
+
+  footer { padding: 1.8rem 1rem; font-size: 0.78rem; }
 }
