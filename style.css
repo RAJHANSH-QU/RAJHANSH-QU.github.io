@@ -204,7 +204,7 @@ body {
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 500;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -468,24 +468,27 @@ section { padding: 6rem 6%; }
 }
 .cube-scene:active { cursor: grabbing; }
 
-/* The cube container — JS applies rotateX/Y here */
+/* The cube container — JS applies rotateX/Y here ONLY (no translateY) */
 .cube {
   width: 100%; height: 100%;
   position: relative;
-  transform-style: preserve-3d; /* children live in real 3D space */
-  /* Default view angle so 3 faces are visible on load */
+  transform-style: preserve-3d;
   transform: rotateX(-18deg) rotateY(28deg);
-  /* Smooth inertia after drag ends */
   transition: transform 0.05s linear;
 }
 
-/* Levitation float — JS toggles this class on/off */
-.cube.floating {
+/* Float wrapper — handles vertical bob in screen-space only */
+.cube-float {
+  width: 100%; height: 100%;
+}
+
+/* Levitation float — JS toggles this class on .cube-float, not .cube */
+.cube-float.floating {
   animation: levitate 3.5s ease-in-out infinite;
 }
 @keyframes levitate {
-  0%, 100% { transform: rotateX(var(--rx, -18deg)) rotateY(var(--ry, 28deg)) translateY(0); }
-  50%       { transform: rotateX(var(--rx, -18deg)) rotateY(var(--ry, 28deg)) translateY(-22px); }
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-22px); }
 }
 
 /* ---- CUBE FACES ----
@@ -675,7 +678,7 @@ footer strong { color: var(--accent2); }
   border: none;
   cursor: pointer;
   padding: 4px;
-  z-index: 600;
+  z-index: 1300;
 }
 .nav-hamburger span {
   display: block;
@@ -712,7 +715,7 @@ footer strong { color: var(--accent2); }
     gap: 2.5rem;
     transform: translateX(100%);
     transition: transform 0.35s cubic-bezier(0.77, 0, 0.175, 1);
-    z-index: 550;
+    z-index: 1200;
     border-left: 1px solid rgba(124,92,252,0.15);
   }
   .nav-links.open { transform: translateX(0); }
@@ -724,7 +727,7 @@ footer strong { color: var(--accent2); }
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.55);
-    z-index: 540;
+    z-index: 1100;
   }
 
   /* --- Sections --- */
