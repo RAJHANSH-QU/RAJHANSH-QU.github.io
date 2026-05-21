@@ -302,7 +302,6 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
    ✅ Works for both mouse and touch
 ============================================= */
 const cubeEl  = document.getElementById('cube');
-const floatEl = document.getElementById('cubeFloat');
 const sceneEl = document.getElementById('cubeScene');
 
 let rotX = -18; /* current tilt  (up/down) */
@@ -322,22 +321,26 @@ function applyTransform() {
 }
 
 /*
-  Stop the levitation CSS animation.
+  Stop the levitation CSS animation and store the
+  current angles so they are not lost.
 */
 function pauseFloat() {
-  floatEl.classList.remove('floating');
-  floatEl.style.animation = 'none';
+  cubeEl.classList.remove('floating');
+  cubeEl.style.animation = 'none';
   applyTransform();
 }
 
 /*
-  Restart levitation — simply re-enable the class.
-  translateY is now on floatEl in screen-space so no
-  angle drift is possible.
+  Restart levitation from whatever rotX/rotY we're at now.
+  We set CSS custom properties --rx and --ry which the
+  @keyframes levitate uses, so it floats from the
+  correct current position instead of snapping to default.
 */
 function resumeFloat() {
-  floatEl.style.animation = '';
-  floatEl.classList.add('floating');
+  cubeEl.style.setProperty('--rx', rotX + 'deg');
+  cubeEl.style.setProperty('--ry', rotY + 'deg');
+  cubeEl.style.animation = ''; /* re-enable */
+  cubeEl.classList.add('floating');
 }
 
 /* Cancel any running inertia animation */
@@ -364,7 +367,8 @@ function runInertia() {
   }
 
   rotY += velY;
-  rotX += velX; /* NO clamp — allows top/bottom faces */
+  rotX += velX;
+  rotX = Math.max(-90, Math.min(90, rotX));
   applyTransform();
 
   inertiaFrame = requestAnimationFrame(runInertia);
@@ -390,9 +394,10 @@ document.addEventListener('mousemove', e => {
   /* Convert pixel delta to rotation degrees.
      0.45 feels natural — adjust for faster/slower feel */
   rotY += dx * 0.45;
-  rotX -= dy * 0.45; /* minus because dragging down = tilt backward */
+  rotX -= dy * 0.45;
+  /* Clamp vertical tilt — prevents cube flying off screen */
+  rotX = Math.max(-90, Math.min(90, rotX));
 
-  /* Track velocity for inertia */
   velY = dx * 0.45;
   velX = -dy * 0.45;
 
@@ -426,6 +431,7 @@ sceneEl.addEventListener('touchmove', e => {
 
   rotY += dx * 0.45;
   rotX -= dy * 0.45;
+  rotX = Math.max(-90, Math.min(90, rotX));
 
   velY = dx * 0.45;
   velX = -dy * 0.45;
@@ -445,9 +451,7 @@ resumeFloat();
 
 
 /* =============================================
-   6. HAMBURGER MENU
-   Toggle drawer open/close on mobile.
-   Closes when a nav link is clicked.
+   6. HAMBURGER MENU — mobile nav toggle
 ============================================= */
 const hamburger = document.getElementById('navHamburger');
 const navLinks  = document.getElementById('navLinks');
@@ -455,55 +459,15 @@ const navLinks  = document.getElementById('navLinks');
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('open');
   navLinks.classList.toggle('open');
-  document.body.classList.toggle('nav-open');
+  /* Prevent page scroll while menu is open */
+  document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
 });
 
-/* Close drawer and smooth-scroll to section when any nav link is tapped */
-document.querySelectorAll('.nav-link-item').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault(); /* prevent jump — we handle scroll manually */
+/* Close menu when any nav link is clicked */
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
     hamburger.classList.remove('open');
     navLinks.classList.remove('open');
-    document.body.classList.remove('nav-open');
-
-    const targetId = link.getAttribute('href').replace('#', '');
-    const target   = document.getElementById(targetId);
-    if (target) {
-      /* Small delay on mobile so drawer closes before scroll */
-      setTimeout(() => {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
-    }
+    document.body.style.overflow = '';
   });
 });
-
-
-/* =============================================
-   7. RESPONSIVE CUBE SIZE
-   Cube translateZ must match half of rendered
-   CSS size so faces align correctly on all screens.
-============================================= */
-function getCubeHalf() {
-  const scene = document.getElementById('cubeScene');
-  return scene.offsetWidth / 2;
-}
-
-function updateCubeFaces() {
-  const half = getCubeHalf();
-  const faceMap = {
-    '.face-front' : `translateZ(${half}px)`,
-    '.face-back'  : `rotateY(180deg) translateZ(${half}px)`,
-    '.face-right' : `rotateY(90deg) translateZ(${half}px)`,
-    '.face-left'  : `rotateY(-90deg) translateZ(${half}px)`,
-    '.face-top'   : `rotateX(90deg) translateZ(${half}px)`,
-    '.face-bottom': `rotateX(-90deg) translateZ(${half}px)`,
-  };
-  Object.entries(faceMap).forEach(([sel, val]) => {
-    const el = document.querySelector(sel);
-    if (el) el.style.transform = val;
-  });
-}
-
-/* Run on load and on resize */
-updateCubeFaces();
-window.addEventListener('resize', updateCubeFaces);
