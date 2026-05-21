@@ -445,3 +445,58 @@ sceneEl.addEventListener('touchend', () => {
 
 /* Start levitation on page load */
 resumeFloat();
+
+
+/* =============================================
+   6. HAMBURGER MENU
+   Toggle drawer open/close on mobile.
+   Closes when a nav link is clicked.
+============================================= */
+const hamburger = document.getElementById('navHamburger');
+const navLinks  = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+  document.body.classList.toggle('nav-open');
+});
+
+/* Close drawer when any nav link is tapped */
+document.querySelectorAll('.nav-link-item').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
+    document.body.classList.remove('nav-open');
+  });
+});
+
+
+/* =============================================
+   7. RESPONSIVE CUBE SIZE
+   Cube translateZ must match half of rendered
+   CSS size so faces align correctly on all screens.
+============================================= */
+function getCubeHalf() {
+  const scene = document.getElementById('cubeScene');
+  return scene.offsetWidth / 2;
+}
+
+function updateCubeFaces() {
+  const half = getCubeHalf();
+  const faceMap = {
+    '.face-front' : `translateZ(${half}px)`,
+    '.face-back'  : `rotateY(180deg) translateZ(${half}px)`,
+    '.face-right' : `rotateY(90deg) translateZ(${half}px)`,
+    '.face-left'  : `rotateY(-90deg) translateZ(${half}px)`,
+    '.face-top'   : `rotateX(90deg) translateZ(${half}px)`,
+    '.face-bottom': `rotateX(-90deg) translateZ(${half}px)`,
+  };
+  Object.entries(faceMap).forEach(([sel, val]) => {
+    const el = document.querySelector(sel);
+    if (el) el.style.transform = val;
+  });
+}
+
+/* Run on load and on resize */
+updateCubeFaces();
+window.addEventListener('resize', updateCubeFaces);
