@@ -15,17 +15,26 @@
     <h1 id="introText"></h1>
   </div>
 
+
+  <!-- =============================================
+       WAVE CURSOR CANVAS
+       Fixed canvas on top of page.
+       JS draws sea-ripple waves here on mouse move.
+       pointer-events:none so clicks pass through.
   ============================================= -->
   <canvas id="wave-canvas"></canvas>
 
 
   <!-- =============================================
        INTRO SPLASH SCREEN
+       Black screen. Words fall in 3D one by one.
+       CSS animation fades it out after 4.2s.
   ============================================= -->
   
 
   <!-- =============================================
        NAVBAR
+       Fixed top bar with logo and nav links.
   ============================================= -->
   <nav>
     <div class="nav-logo">RAJ<span>HANSH</span><span class="nav-dot"></span></div>
@@ -43,6 +52,9 @@
 
   <!-- =============================================
        HERO SECTION
+       Full viewport height.
+       Star particle canvas behind content.
+       Typing text cycles through roles.
   ============================================= -->
   <section id="home">
     <canvas id="particles-canvas"></canvas>
@@ -60,6 +72,8 @@
 
   <!-- =============================================
        ABOUT SECTION
+       Text only — no photo.
+       Stat cards show numbers below text.
   ============================================= -->
   <section id="about">
     <div class="reveal">
@@ -69,7 +83,9 @@
     <div class="about-inner reveal">
       <p>Final year BCA student from <strong>Roorkee, Uttarakhand</strong>, specialising in Mobile App & Web Development.</p>
 
-<p>I enjoy building things for the web — stuff that looks good and actually works. Still learning, still figuring things out, but that's the fun part.</p>
+<p>I am a passionate and dedicated BCA student with a strong interest in web development and software technology. I enjoy designing and building responsive, user-friendly websites using HTML, CSS, and JavaScript. I am currently expanding my knowledge in full-stack development and exploring modern technologies to strengthen my technical and problem-solving skills.
+
+I enjoy learning new concepts, working on real-world projects, and continuously improving my abilities as a developer. My goal is to build impactful digital solutions while growing as a skilled full-stack developer</p>
 
 <p>My goal is to become a <strong>Full Stack Developer</p>
       <div class="about-stats">
@@ -126,6 +142,13 @@
 
   <!-- =============================================
        PROJECTS — LEVITATING 3D CUBE
+       - cube-scene   → perspective wrapper
+       - cube         → the actual rotating element
+       - face-*       → 6 project faces
+       - backface-visibility:hidden on .face
+         prevents text bleeding through opposite face
+       - GitHub buttons link to your real repos
+       - Shadow pulses below the cube
   ============================================= -->
   <section id="projects">
     <div class="reveal">
@@ -222,6 +245,8 @@
 
   <!-- =============================================
        CONTACT SECTION
+       Left: intro text + social cards
+       Right: contact form with purple send button
   ============================================= -->
   <section id="contact">
     <div class="reveal">
