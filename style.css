@@ -107,10 +107,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 0px;
   white-space: nowrap;
-  max-width: 95vw;
+  overflow: hidden;
+  max-width: 100vw;
 }
 
 .skill-icon i {
@@ -124,8 +124,8 @@ body {
   display: inline-block;
   font-family: 'Syne', sans-serif;
   font-weight: 900;
-  font-size: clamp(1.2rem, 5.5vw, 4rem); /* scales with screen width */
-  letter-spacing: 0.3vw;
+  font-size: clamp(0.9rem, 4.2vw, 4rem); /* scales with screen width */
+  letter-spacing: clamp(0px, 0.3vw, 6px);
   color: #ecebeb;
 
   /* Clean simple 3D depth — no glow, just layered shadows */
@@ -157,7 +157,7 @@ body {
    PORTFOLIO LETTERS — bigger + purple 3D
 ============================================= */
 #introText .big-letter {
-  font-size: clamp(1.6rem, 6vw, 5rem) !important;
+  font-size: clamp(1.1rem, 5vw, 5rem) !important;
   letter-spacing: 0.5vw !important;
   color: #fbfbfb !important;
 
@@ -789,9 +789,9 @@ footer strong { color: var(--accent2); }
   .nav-logo { font-size: 1.1rem; letter-spacing: 2px; }
 
   /* Loader text fits small screens */
-  #introText span    { font-size: 8vw; }
-  #introText .big-letter { font-size: 9.5vw !important; }
-  #introText .space  { width: 3vw; }
+  #introText span    { font-size: 4vw; letter-spacing: 0.2vw; }
+  #introText .big-letter { font-size: 5vw !important; letter-spacing: 0.3vw !important; }
+  #introText .space  { width: 2vw; }
 
   .hero-greeting { letter-spacing: 3px; }
   .hero-roles    { font-size: 0.95rem; }
