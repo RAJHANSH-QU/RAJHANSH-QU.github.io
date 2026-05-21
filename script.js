@@ -302,6 +302,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
    ✅ Works for both mouse and touch
 ============================================= */
 const cubeEl  = document.getElementById('cube');
+const floatEl = document.getElementById('cubeFloat');
 const sceneEl = document.getElementById('cubeScene');
 
 let rotX = -18; /* current tilt  (up/down) */
@@ -321,26 +322,22 @@ function applyTransform() {
 }
 
 /*
-  Stop the levitation CSS animation and store the
-  current angles so they are not lost.
+  Stop the levitation CSS animation.
 */
 function pauseFloat() {
-  cubeEl.classList.remove('floating');
-  cubeEl.style.animation = 'none';
+  floatEl.classList.remove('floating');
+  floatEl.style.animation = 'none';
   applyTransform();
 }
 
 /*
-  Restart levitation from whatever rotX/rotY we're at now.
-  We set CSS custom properties --rx and --ry which the
-  @keyframes levitate uses, so it floats from the
-  correct current position instead of snapping to default.
+  Restart levitation — simply re-enable the class.
+  translateY is now on floatEl in screen-space so no
+  angle drift is possible.
 */
 function resumeFloat() {
-  cubeEl.style.setProperty('--rx', rotX + 'deg');
-  cubeEl.style.setProperty('--ry', rotY + 'deg');
-  cubeEl.style.animation = ''; /* re-enable */
-  cubeEl.classList.add('floating');
+  floatEl.style.animation = '';
+  floatEl.classList.add('floating');
 }
 
 /* Cancel any running inertia animation */
@@ -461,12 +458,22 @@ hamburger.addEventListener('click', () => {
   document.body.classList.toggle('nav-open');
 });
 
-/* Close drawer when any nav link is tapped */
+/* Close drawer and smooth-scroll to section when any nav link is tapped */
 document.querySelectorAll('.nav-link-item').forEach(link => {
-  link.addEventListener('click', () => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault(); /* prevent jump — we handle scroll manually */
     hamburger.classList.remove('open');
     navLinks.classList.remove('open');
     document.body.classList.remove('nav-open');
+
+    const targetId = link.getAttribute('href').replace('#', '');
+    const target   = document.getElementById(targetId);
+    if (target) {
+      /* Small delay on mobile so drawer closes before scroll */
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
   });
 });
 
