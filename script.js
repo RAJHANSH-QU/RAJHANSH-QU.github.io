@@ -61,6 +61,22 @@ lines.forEach((lineWords, lineIndex) => {
   introText.appendChild(lineDiv);
 });
 
+// Scale intro text to fit viewport width
+function scaleIntroText() {
+  const wrapper = document.getElementById('introText');
+  if (!wrapper) return;
+  // Reset scale first to measure natural width
+  wrapper.style.transform = 'none';
+  const naturalW = wrapper.scrollWidth;
+  const available = window.innerWidth * 0.88; // 88% of screen
+  if (naturalW > available) {
+    const scale = available / naturalW;
+    wrapper.style.transform = `scale(${scale})`;
+  }
+}
+scaleIntroText();
+window.addEventListener('resize', scaleIntroText);
+
 // Hide loader after all letters have landed
 setTimeout(() => {
   loader.classList.add('hide');
