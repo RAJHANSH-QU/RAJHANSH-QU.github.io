@@ -65,16 +65,24 @@ lines.forEach((lineWords, lineIndex) => {
 function scaleIntroText() {
   const wrapper = document.getElementById('introText');
   if (!wrapper) return;
-  // Reset scale first to measure natural width
   wrapper.style.transform = 'none';
-  const naturalW = wrapper.scrollWidth;
-  const available = window.innerWidth * 0.88; // 88% of screen
-  if (naturalW > available) {
-    const scale = available / naturalW;
-    wrapper.style.transform = `scale(${scale})`;
-  }
+  wrapper.style.transition = 'none';
+  // Small delay so browser finishes rendering all spans
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const naturalW = wrapper.scrollWidth;
+      const available = window.innerWidth * 0.92;
+      if (naturalW > available) {
+        const scale = available / naturalW;
+        wrapper.style.transform = `scale(${scale})`;
+      }
+    });
+  });
 }
-scaleIntroText();
+// Run AFTER all letter animations have finished landing
+// Total animation time = globalIndex * 0.06s + 0.7s
+// With ~21 letters max: ~1.95s, so wait 2.2s to be safe
+setTimeout(scaleIntroText, 200); // run early so it's ready
 window.addEventListener('resize', scaleIntroText);
 
 // Hide loader after all letters have landed
