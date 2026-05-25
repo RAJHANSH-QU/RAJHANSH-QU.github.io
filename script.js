@@ -61,30 +61,6 @@ lines.forEach((lineWords, lineIndex) => {
   introText.appendChild(lineDiv);
 });
 
-// Scale intro text to fit viewport width
-function scaleIntroText() {
-  const wrapper = document.getElementById('introText');
-  if (!wrapper) return;
-  wrapper.style.transform = 'none';
-  wrapper.style.transition = 'none';
-  // Small delay so browser finishes rendering all spans
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const naturalW = wrapper.scrollWidth;
-      const available = window.innerWidth * 0.92;
-      if (naturalW > available) {
-        const scale = available / naturalW;
-        wrapper.style.transform = `scale(${scale})`;
-      }
-    });
-  });
-}
-// Run AFTER all letter animations have finished landing
-// Total animation time = globalIndex * 0.06s + 0.7s
-// With ~21 letters max: ~1.95s, so wait 2.2s to be safe
-setTimeout(scaleIntroText, 200); // run early so it's ready
-window.addEventListener('resize', scaleIntroText);
-
 // Hide loader after all letters have landed
 setTimeout(() => {
   loader.classList.add('hide');
@@ -469,26 +445,3 @@ sceneEl.addEventListener('touchend', () => {
 
 /* Start levitation on page load */
 resumeFloat();
-
-
-/* =============================================
-   6. HAMBURGER MENU — mobile nav toggle
-============================================= */
-const hamburger = document.getElementById('navHamburger');
-const navLinks  = document.getElementById('navLinks');
-
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('open');
-  navLinks.classList.toggle('open');
-  /* Prevent page scroll while menu is open */
-  document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
-});
-
-/* Close menu when any nav link is clicked */
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    hamburger.classList.remove('open');
-    navLinks.classList.remove('open');
-    document.body.style.overflow = '';
-  });
-});
