@@ -391,8 +391,7 @@ function runInertia() {
   }
 
   rotY += velY;
-  rotX += velX;
-  rotX = Math.max(-90, Math.min(90, rotX));
+  rotX += velX; /* NO clamp — allows top/bottom faces */
   applyTransform();
 
   inertiaFrame = requestAnimationFrame(runInertia);
@@ -418,10 +417,9 @@ document.addEventListener('mousemove', e => {
   /* Convert pixel delta to rotation degrees.
      0.45 feels natural — adjust for faster/slower feel */
   rotY += dx * 0.45;
-  rotX -= dy * 0.45;
-  /* Clamp vertical tilt — prevents cube flying off screen */
-  rotX = Math.max(-90, Math.min(90, rotX));
+  rotX -= dy * 0.45; /* minus because dragging down = tilt backward */
 
+  /* Track velocity for inertia */
   velY = dx * 0.45;
   velX = -dy * 0.45;
 
@@ -455,7 +453,6 @@ sceneEl.addEventListener('touchmove', e => {
 
   rotY += dx * 0.45;
   rotX -= dy * 0.45;
-  rotX = Math.max(-90, Math.min(90, rotX));
 
   velY = dx * 0.45;
   velX = -dy * 0.45;
