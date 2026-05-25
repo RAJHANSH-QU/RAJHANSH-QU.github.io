@@ -458,22 +458,16 @@ section { padding: 6rem 6%; }
   box-shadow: 0 0 8px var(--glow);
 }
 
-/* =============================================
-   12. PROJECTS — 3D LEVITATING CUBE
-============================================= */
-#projects { background: var(--bg2); text-align: center; overflow: hidden; }
+#projects { background: var(--bg2); text-align: center; }
 .projects-intro { color: var(--muted); margin-bottom: 3rem; font-size: 1rem; }
 
 /* Outer wrapper — sets the 3D perspective depth */
 .cube-scene {
   width: 300px; height: 300px;
   margin: 0 auto;
-  perspective: 900px;
+  perspective: 1000px;
   cursor: grab;
-  user-select: none;
-  /* Contain cube so it never bleeds outside section */
-  position: relative;
-  z-index: 1;
+  user-select: none; /* prevent text selection while dragging */
 }
 .cube-scene:active { cursor: grabbing; }
 
@@ -481,12 +475,11 @@ section { padding: 6rem 6%; }
 .cube {
   width: 100%; height: 100%;
   position: relative;
-  transform-style: preserve-3d;
+  transform-style: preserve-3d; /* children live in real 3D space */
+  /* Default view angle so 3 faces are visible on load */
   transform: rotateX(-18deg) rotateY(28deg);
+  /* Smooth inertia after drag ends */
   transition: transform 0.05s linear;
-  /* Force GPU compositing — prevents face z-fighting */
-  will-change: transform;
-  -webkit-transform-style: preserve-3d;
 }
 
 /* Levitation float — JS toggles this class on/off */
@@ -511,11 +504,11 @@ section { padding: 6rem 6%; }
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 1.8rem;
-  /* Fully opaque — no face bleed-through */
-  background: #080a18;
+  /* THE backface fix */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  isolation: isolate;
+  /* Glassmorphism dark panel */
+  background: rgba(8,10,24,0.96);
   border: 1px solid rgba(124,92,252,0.3);
   box-shadow:
     inset 0 0 50px rgba(124,92,252,0.05),
@@ -528,8 +521,6 @@ section { padding: 6rem 6%; }
   border-radius: 16px;
   background: linear-gradient(135deg, rgba(124,92,252,0.07) 0%, transparent 55%);
   pointer-events: none;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 /* Position each face in 3D space.
